@@ -985,7 +985,8 @@ class SkyMark:
 
         for i,(d,b,a) in enumerate(sc[:8]):
             rv=rel_brg(b,self.hdg)
-            bl=brg_txt(rv,LANG[self.lc])
+            # 절대 헤딩으로 표시 (현재 헤딩 기준 상대각 → 실제 방위각)
+            abs_hdg = b % 360  # 절대 방위각
             col = ORANGE if rv%360<180 else ACCENT
 
             row=tk.Frame(self.apt_list_frame, bg=BG2 if i%2==0 else BG3)
@@ -994,7 +995,7 @@ class SkyMark:
             tk.Label(row, text=str(i+1), font=FXS, bg=row["bg"], fg=DIM, width=3).pack(side="left")
             tk.Label(row, text=a["icao"], font=FB, bg=row["bg"], fg=WHITE, width=6).pack(side="left")
             tk.Label(row, text=a["name"][:22], font=FXS, bg=row["bg"], fg=DIM, width=22, anchor="w").pack(side="left")
-            tk.Label(row, text=bl, font=FB, bg=row["bg"], fg=col, width=10).pack(side="left")
+            tk.Label(row, text=f"HDG {abs_hdg:.0f}°", font=FB, bg=row["bg"], fg=col, width=10).pack(side="left")
             tk.Label(row, text=f"{d:.1f}{self.L('nm')}", font=FB, bg=row["bg"], fg=WHITE, width=8).pack(side="left")
 
             eb=tk.Label(row, text="🌍", font=("맑은 고딕",11),
